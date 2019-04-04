@@ -1,18 +1,17 @@
 package mate.academy.hashMap;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class ReferenceMyHashMap<K, V> implements MyHashMap<K, V> {
+public class MyHashMapImpl<K, V> implements MyHashMap<K, V> {
 
     private Node<K, V>[] hashTable;
     private int size = 0;
     private float threshold;
 
-    public ReferenceMyHashMap() {
+    public MyHashMapImpl() {
         hashTable = new Node[16];
         threshold = hashTable.length * 0.75F;
     }
@@ -30,11 +29,11 @@ public class ReferenceMyHashMap<K, V> implements MyHashMap<K, V> {
         if (hashTable[index] == null) {
             return simpleAdd(index, newNode);
         }
-        //get node of this index
+
         List<Node<K, V>> nodeList = hashTable[index].getNodes();
-        //run of nodeList collection
+
         for (Node<K, V> node : nodeList) {
-            //if the node is exist, we should override him
+
             if (keyExistButValueNew(node, newNode, value) ||
                     collisionProcessing(node, newNode, nodeList)) {
                 return true;
@@ -60,9 +59,7 @@ public class ReferenceMyHashMap<K, V> implements MyHashMap<K, V> {
             final Node<K, V> nodeFromList,
             final Node<K, V> newNode,
             final List<Node<K, V>> nodes) {
-        /*if hashcode of new node = hash code node from list,
-        != key and value we should add new node + increment the size
-        */
+
         if (newNode.hashCode() == nodeFromList.hashCode() &&
                 !Objects.equals(newNode.key, nodeFromList.key) &&
                 !Objects.equals(newNode.value, nodeFromList.value)
@@ -78,11 +75,11 @@ public class ReferenceMyHashMap<K, V> implements MyHashMap<K, V> {
             final Node<K, V> nodeFromList,
             final Node<K, V> newNode,
             final V value) {
-        //if the key is coincide and the value not coincide...
+
         if (newNode.getKey().equals(nodeFromList.getKey()) &&
                 !newNode.getValue().equals(nodeFromList.getValue())
         ) {
-            //...we set a new value here
+
             nodeFromList.setValue(value);
             return true;
         }
@@ -179,9 +176,6 @@ public class ReferenceMyHashMap<K, V> implements MyHashMap<K, V> {
         };
     }
 
-    //create node with key and value = null
-    //get list node and add the node
-    //and increment the size
     private boolean simpleAdd(int index, Node<K, V> newNode) {
         hashTable[index] = new Node<>(null, null);
         hashTable[index].getNodes().add(newNode);
@@ -198,15 +192,18 @@ public class ReferenceMyHashMap<K, V> implements MyHashMap<K, V> {
         private Node(K key, V value) {
             this.key = key;
             this.value = value;
-            nodes = new LinkedList<Node<K, V>>();
+            nodes = new LinkedList<>();
         }
 
         private List<Node<K, V>> getNodes() {
             return nodes;
         }
 
-        private int hash() {
-            return hashCode() % hashTable.length;
+        private int indexOfBucket() {
+            int varieble = 0;
+            if(hash < 0)
+            varieble = hashCode() % hashTable.length;
+            return varieble;
         }
 
         private K getKey() {

@@ -2,7 +2,7 @@ package mate.academy.hashMap;
 
 public class Main {
     public static void main(String[] args) {
-        ReferenceMyHashMap<String, String> myHashMap = new ReferenceMyHashMap<>();
+        MyHashMapImpl<String, String> myHashMap = new MyHashMapImpl<>();
         myHashMap.put("1", "2");
         myHashMap.put("2", "10");
         myHashMap.put("3", "123");
